@@ -8,6 +8,11 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import io.spring.guides.gs_producing_web_service.GetCountryRequest;
 import io.spring.guides.gs_producing_web_service.GetCountryResponse;
+import io.spring.guides.gs_producing_web_service.GetCountryPopulationRequest;
+import io.spring.guides.gs_producing_web_service.GetCountryPopulationResponse;
+import io.spring.guides.gs_producing_web_service.NewCountryRequest;
+import io.spring.guides.gs_producing_web_service.NewCountryResponse;
+
 
 @Endpoint
 public class CountryEndpoint {
@@ -28,4 +33,23 @@ public class CountryEndpoint {
 
 		return response;
 	}
+	
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCountryPopulationRequest")
+	@ResponsePayload
+	public GetCountryPopulationResponse getCountryPopulation(@RequestPayload GetCountryPopulationRequest request) {
+		GetCountryPopulationResponse response = new GetCountryPopulationResponse();
+		response.setPopulation(countryRepository.findCountry(request.getName()).getPopulation());
+
+		return response;
+	}
+	
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "newCountryRequest")
+	@ResponsePayload
+	public NewCountryResponse newCountry(@RequestPayload NewCountryRequest request) {
+		NewCountryResponse response = new NewCountryResponse();
+		response.setCountry(countryRepository.addCountry(request));
+
+		return response;
+	}
+	
 }

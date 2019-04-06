@@ -6,6 +6,8 @@ import java.util.Map;
 
 import io.spring.guides.gs_producing_web_service.Country;
 import io.spring.guides.gs_producing_web_service.Currency;
+import io.spring.guides.gs_producing_web_service.NewCountryRequest;
+
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -43,5 +45,25 @@ public class CountryRepository {
 	public Country findCountry(String name) {
 		Assert.notNull(name, "The country's name must not be null");
 		return countries.get(name);
+	}
+	
+	public String addCountry(NewCountryRequest countryRequest) {
+		String result = "";
+		
+
+		if(countryRequest != null ) {
+			Country country = countryRequest.getName();
+			country.setCurrency(Currency.EUR);
+			if(countries.get(country.getName()) != null) {
+				result = "This country already exists";
+			} else {
+				countries.put(country.getName(), country);
+				result = "New country was created";
+			}
+		
+		} else {
+			result ="Empty Country";
+		}
+		return result;
 	}
 }
